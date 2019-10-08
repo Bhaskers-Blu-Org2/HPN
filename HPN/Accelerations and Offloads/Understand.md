@@ -55,6 +55,8 @@ The native datapath describes packets received on any adapter that does not have
 
 The picture below shows data travelling on the native datapath; coming off the wire, entering the physical port of the physical adapter, then through the miniport driver and ultimately operating system.
 
+![Native Data Path](Native Data Path.png)
+
 #### When you would use this Datapath
 
 Any adapter that is not attached to a Hyper-V Virtual Switch, not using RDMA, or other Direct Memory Access technology such as SR-IOV.
@@ -80,4 +82,6 @@ Default out of the box Windows networking. Non-Virtualized Scenarios that do not
   - Web Front-End Servers (Baremetal)
 
   - Remote Desktop Services – Session based virtualization
+
   - Systems that demand lower latency over the availability, maintenance, and consolidation benefits of virtualized infrastructure
+
