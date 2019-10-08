@@ -85,3 +85,11 @@ Default out of the box Windows networking. Non-Virtualized Scenarios that do not
 
   - Systems that demand lower latency over the availability, maintenance, and consolidation benefits of virtualized infrastructure
 
+### Synthetic Datapath
+
+#### Description
+The synthetic datapath describes packets received on any adapter that is bound to a virtual switch.  This is the default datapath for adapters attached to the Hyper-V Virtual Switch.  This includes virtual NICs (vNIC) in the host OS as well as virtual machine NICs (vmNIC) in guest virtual machines and containers.
+
+The picture below shows data travelling on the synthetic datapath; coming off the wire, entering the physical port of the physical adapter, then through the miniport driver.  Next it travels through the virtual switch before riding along the VMBus and ultimately reaching a vNIC or vmNIC.
+
+![Synthetic Data Path](https://github.com/microsoft/HPN/blob/master/HPN/Accelerations%20and%20Offloads/Media/Synthetic%20Data%20Path.png)
