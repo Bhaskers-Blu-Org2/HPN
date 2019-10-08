@@ -88,8 +88,92 @@ Default out of the box Windows networking. Non-Virtualized Scenarios that do not
 ### Synthetic Datapath
 
 #### Description
-The synthetic datapath describes packets received on any adapter that is bound to a virtual switch.  This is the default datapath for adapters attached to the Hyper-V Virtual Switch.  This includes virtual NICs (vNIC) in the host OS as well as virtual machine NICs (vmNIC) in guest virtual machines and containers.
+The synthetic datapath describes packets received on any adapter that is bound to a virtual switch that is not optimized with direct access to hardware.  This is the default datapath for adapters attached to the Hyper-V Virtual Switch.  This includes virtual NICs (vNIC) in the host OS as well as virtual machine NICs (vmNIC) in guest virtual machines and containers.
 
 The picture below shows data travelling on the synthetic datapath; coming off the wire, entering the physical port of the physical adapter, then through the miniport driver.  Next it travels through the virtual switch before riding along the VMBus and ultimately reaching a vNIC or vmNIC.
 
 ![Synthetic Data Path](https://github.com/microsoft/HPN/blob/master/HPN/Accelerations%20and%20Offloads/Media/Synthetic%20Data%20Path.png)
+
+#### When you would use this Datapath
+
+Data travelling to any virtual NIC that is attached to a Hyper-V Virtual Switch and is not optimized with direct access to hardware.
+
+#### Benefits
+
+  - Generally simple to configure
+
+  - Full benefits of the Software Defined Datacenter
+
+  - Provides virtualization support
+
+#### Drawbacks
+
+  - Small performance loss from the Hyper-V virtual Switch
+
+  - Packet processing consumes Host CPU cycles
+
+#### Scenarios
+
+Common examples include (but are not limited to):
+
+  - Hyper-V Compute (Host and Guest Virtual NICs)
+
+  - Windows and Hyper-V Containers
+
+  - Storage Spaces Direct vNICs that do not use RDMA
+
+  - Software Defined Networking
+
+### Hardware Datapath
+
+The hardware datapath describes packets received on any adapter that is optimized with Direct Memory Access (DMA) technology (for example SR-IOV). The virtual switch may or may not be attached to this adapter, however packets travelling on this datapath will not traverse the virtual switch to reach their destination.
+
+The picture below shows data travelling on the hardware datapath; coming
+off the wire, entering the physical port of the physical adapter. Next,
+a physical or virtual function is engaged prior to reaching the
+corresponding miniport in the host or virtual machines.
+
+![Hardware Data Path](https://github.com/microsoft/HPN/blob/master/HPN/Accelerations%20and%20Offloads/Media/Hardware%20Data%20Path.png)
+
+#### When you would use this Datapath
+
+Any adapter that uses a Direct Memory Access (DMA) technology such as RDMA (Remote Direct Memory Access) including Guest RDMA, or SR-IOV (Single Root IO-Virtualization). Packets on this datapath have a direct link that reduces latency and bypasses the OS software stack.
+
+#### Benefits
+
+  - Low host CPU processing
+  - Low latency
+  - Increased throughput
+  - Support for native and virtualized environments
+
+#### Drawbacks
+
+  - The guest cannot participate in Microsoft SDN
+
+  - No support for multicast or broadcast traffic
+
+  - Reduced security boundary
+      - No modern QoS support
+      - Guests operate in the default IEEE 802.1p class of service
+
+#### Scenarios
+
+Some Hyper-V Virtualized Scenarios. Common examples include:
+
+  - Hyper-V Compute
+    
+      - Host SR-IOV Physical Function
+    
+      - Guest SR-IOV Virtual Function
+
+      - Guest RDMA
+
+  - Remote Direct Memory Access (RDMA) including:
+
+      - Storage Spaces Direct adapters
+
+      - Other NICs using SMB
+
+## Acceleration Categories
+
+Accelerations can be implemented in one or more locations…
