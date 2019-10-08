@@ -55,7 +55,7 @@ The native datapath describes packets received on any adapter that does not have
 
 The picture below shows data travelling on the native datapath; coming off the wire, entering the physical port of the physical adapter, then through the miniport driver and ultimately operating system.
 
-![Native Data Path](Native Data Path.png)
+![Native Data Path](Media/Native Data Path.png)
 
 #### When you would use this Datapath
 

@@ -6,4 +6,3 @@ The high-performance networking topics include:
 
 - [Insider Preview](HPN/Insider Preview.md)
 - [Accelerations](HPN/Accelerations and Offloads.md)
-- 
